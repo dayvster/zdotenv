@@ -1,8 +1,7 @@
-# dotenv.zig
+# zdotenv
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![zig](https://img.shields.io/badge/zig-0.15%2B-orange)](https://ziglang.org/)
-[![Docs](https://img.shields.io/badge/docs-generated-blue)](https://ziglang.org/documentation/)
 
 A simple Zig library for loading environment variables from `.env` files.
 
@@ -10,7 +9,7 @@ A simple Zig library for loading environment variables from `.env` files.
 
 Fetch the package with Zig:
 ```sh
-zig fetch https://github.com/YOUR_GITHUB_USERNAME/dotenv.zig
+zig fetch --save git+https://github.com/dayvster/zdotenv
 ```
 Then add it as a module in your `build.zig`:
 ```zig
