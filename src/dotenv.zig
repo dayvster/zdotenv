@@ -91,7 +91,3 @@ pub const Dotenv = struct {
         return self.env_map.get(key);
     }
 };
-
-pub fn get(self: *Dotenv, key: []const u8) ?[]const u8 {
-    return self.env_map.get(key);
-}
