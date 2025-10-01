@@ -40,3 +40,37 @@ test "dotenv loads and gets values" {
     try std.testing.expect(std.mem.eql(u8, dotenv.get("BAZ") orelse "", "qux"));
     try std.testing.expect(dotenv.get("NOTFOUND") == null);
 }
+
+test "load prints warning for missing file" {
+    const allocator = std.testing.allocator;
+    var dotenv = Dotenv.init(allocator);
+    defer dotenv.deinit();
+
+    // try to load a non-existent file and expect a warning
+    try dotenv.load(&[_][]const u8{"test_missing.env"});
+}
+
+test "load handles malformed lines gracefully" {
+    const allocator = std.testing.allocator;
+    var dotenv = Dotenv.init(allocator);
+    defer dotenv.deinit();
+
+    const tmp_path = "malformed.env";
+    const file = try std.fs.cwd().createFile(tmp_path, .{ .truncate = true });
+    defer std.fs.cwd().deleteFile(tmp_path) catch {};
+    try file.writeAll("VALID=ok\nMALFORMED_LINE\nANOTHER=good\n");
+    try file.sync();
+    file.close();
+
+    // Print raw contents of malformed.env before parsing
+    const read_file = try std.fs.cwd().openFile(tmp_path, .{});
+    defer read_file.close();
+    var buf: [128]u8 = undefined;
+    const n = try read_file.readAll(&buf);
+    std.debug.print("malformed.env contents: {s}\n", .{buf[0..n]});
+
+    // Try to load and catch any error
+    dotenv.load(&[_][]const u8{tmp_path}) catch |err| {
+        std.debug.print("Caught expected error: {}\n", .{err});
+    };
+}

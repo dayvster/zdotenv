@@ -30,7 +30,11 @@ pub const Dotenv = struct {
             if (cwd.access(path, .{})) {
                 try self.parseFile(path);
             } else |err| {
-                if (err != error.FileNotFound) return err;
+                if (err == error.FileNotFound) {
+                    std.debug.print("Warning: .env file not found: {s}\n", .{path});
+                } else {
+                    return err;
+                }
             }
         }
     }
