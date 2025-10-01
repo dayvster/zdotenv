@@ -66,4 +66,4 @@ zig build test
 ```
 
 ## License
-MIT — see [LICENSE](LICENSE)
+[LICENSE](LICENSE)
