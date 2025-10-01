@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![zig](https://img.shields.io/badge/zig-0.15%2B-orange)](https://ziglang.org/)
+[![Docs](https://img.shields.io/badge/docs-generated-blue)](https://ziglang.org/documentation/)
 
 A simple Zig library for loading environment variables from `.env` files.
 
@@ -65,4 +66,4 @@ zig build test
 ```
 
 ## License
-MIT
+MIT — see [LICENSE](LICENSE)
