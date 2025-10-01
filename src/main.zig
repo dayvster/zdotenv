@@ -74,3 +74,26 @@ test "load handles malformed lines gracefully" {
         std.debug.print("Caught expected error: {}\n", .{err});
     };
 }
+
+test "quoted values are parsed correctly" {
+    const allocator = std.testing.allocator;
+    var dotenv = Dotenv.init(allocator);
+    defer dotenv.deinit();
+
+    const tmp_path = "quoted.env";
+    const file = try std.fs.cwd().createFile(tmp_path, .{ .truncate = true });
+    defer std.fs.cwd().deleteFile(tmp_path) catch {};
+    try file.writeAll("DB_URL=\"postgres://user:pass@localhost:5432/db\"\nSECRET='s3cr3t!'\nPLAIN=hello_world\nNAME=\"Dave P.\"\n");
+    try file.sync();
+    file.close();
+
+    try dotenv.load(&[_][]const u8{tmp_path});
+    std.debug.print("DB_URL: {s}\n", .{dotenv.get("DB_URL") orelse "<not found>"});
+    std.debug.print("SECRET: {s}\n", .{dotenv.get("SECRET") orelse "<not found>"});
+    std.debug.print("PLAIN: {s}\n", .{dotenv.get("PLAIN") orelse "<not found>"});
+    std.debug.print("NAME: {s}\n", .{dotenv.get("NAME") orelse "<not found>"});
+    try std.testing.expect(std.mem.eql(u8, dotenv.get("DB_URL") orelse "", "postgres://user:pass@localhost:5432/db"));
+    try std.testing.expect(std.mem.eql(u8, dotenv.get("SECRET") orelse "", "s3cr3t!"));
+    try std.testing.expect(std.mem.eql(u8, dotenv.get("PLAIN") orelse "", "hello_world"));
+    try std.testing.expect(std.mem.eql(u8, dotenv.get("NAME") orelse "", "Dave S."));
+}

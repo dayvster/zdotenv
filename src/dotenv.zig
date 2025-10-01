@@ -79,7 +79,11 @@ pub const Dotenv = struct {
         const eq_idx = std.mem.indexOfScalar(u8, trimmed, '=');
         if (eq_idx) |eq| {
             const key = std.mem.trim(u8, trimmed[0..eq], " \t");
-            const value = std.mem.trim(u8, trimmed[eq + 1 ..], " \t");
+            var value = std.mem.trim(u8, trimmed[eq + 1 ..], " \t");
+            // Support quoted values
+            if (value.len >= 2 and ((value[0] == '"' and value[value.len - 1] == '"') or (value[0] == '\'' and value[value.len - 1] == '\''))) {
+                value = value[1 .. value.len - 1];
+            }
             if (key.len == 0) return;
             const allocator = self.env_map.allocator;
             const key_copy = try allocator.alloc(u8, key.len);
