@@ -1,0 +1,27 @@
+# Zig build and cache files
+zig-out/
+.zig-cache/
+
+# Editor and OS files
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+.DS_Store
+.vscode/
+
+# Test and example artifacts
+test.env
+examples/example.env
+
+# Ignore binaries
+*.exe
+*.o
+*.obj
+*.dll
+*.so
+*.dylib
+
+# Ignore log files
+*.log
