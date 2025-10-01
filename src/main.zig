@@ -83,7 +83,7 @@ test "quoted values are parsed correctly" {
     const tmp_path = "quoted.env";
     const file = try std.fs.cwd().createFile(tmp_path, .{ .truncate = true });
     defer std.fs.cwd().deleteFile(tmp_path) catch {};
-    try file.writeAll("DB_URL=\"postgres://user:pass@localhost:5432/db\"\nSECRET='s3cr3t!'\nPLAIN=hello_world\nNAME=\"Dave P.\"\n");
+    try file.writeAll("DB_URL=\"postgres://user:pass@localhost:5432/db\"\nSECRET='s3cr3t!'\nPLAIN=hello_world\nNAME=\"Dave S.\"\n");
     try file.sync();
     file.close();
 
